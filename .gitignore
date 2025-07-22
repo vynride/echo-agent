@@ -24,4 +24,5 @@ dist-ssr
 *.sw?
 
 TODO.txt
-.env*
+.env.local
+.env
