@@ -42,6 +42,8 @@ stop_event = threading.Event()
 transcriptions = ""
 
 def on_open(ws):
+    global stop_event
+
     """Called when the WebSocket connection is established."""
     print("WebSocket connection opened.")
     print(f"Connected to: {API_ENDPOINT}")
@@ -106,10 +108,11 @@ def on_error(ws, error):
 
 
 def on_close(ws, close_status_code, close_msg):
+
     """Called when the WebSocket connection is closed."""
     print(f"WebSocket Disconnected: Status={close_status_code}, Msg={close_msg}")
     
-    global stream, audio
+    global stream, audio, stop_event
     stop_event.set()
     if stream:
         if stream.is_active():
@@ -125,12 +128,12 @@ def on_close(ws, close_status_code, close_msg):
 
 
 def get_transcript():
-    global audio, stream, ws_app
-
+    global audio, stream, ws_app, stop_event
+    stop_event.clear()
+    
     audio = pyaudio.PyAudio()
     try:
         stream = audio.open(
-
             format=pyaudio.paInt16,
             channels=CHANNELS,
             rate=SAMPLE_RATE,
@@ -138,6 +141,7 @@ def get_transcript():
             frames_per_buffer=FRAMES_PER_BUFFER,
             input_device_index=int(os.environ.get("PYAUDIO_INPUT_DEVICE"))
         )
+
         print("Microphone stream opened successfully.")
         print("Speak into your microphone. Press Ctrl+C to stop.")
 
@@ -162,20 +166,15 @@ def get_transcript():
     ws_thread.start()
 
     try:
-        while ws_thread.is_alive():
+        while ws_thread.is_alive() and not stop_event.is_set():
             time.sleep(0.1)
 
-    except KeyboardInterrupt:
-        print("Ctrl+C received. Stopping...")
-        stop_event.set()
-
-        if ws_app and ws_app.sock and ws_app.sock.connected:
+        if stop_event.is_set() and ws_app and ws_app.sock and ws_app.sock.connected:
             try:
                 terminate_message = {"type": "Terminate"}
                 print(f"Sending termination message: {json.dumps(terminate_message)}")
                 ws_app.send(json.dumps(terminate_message))
-
-                time.sleep(5)
+                time.sleep(1)
 
             except Exception as e:
                 print(f"Error sending termination message: {e}")
