@@ -128,8 +128,9 @@ def on_close(ws, close_status_code, close_msg):
 
 
 def get_transcript():
-    global audio, stream, ws_app, stop_event
+    global audio, stream, ws_app, stop_event, transcriptions
     stop_event.clear()
+    transcriptions = ""
     
     audio = pyaudio.PyAudio()
     try:
@@ -180,7 +181,10 @@ def get_transcript():
                 print(f"Error sending termination message: {e}")
 
         if ws_app:
-            ws_app.close()
+            try:
+                ws_app.close()
+            except:
+                pass
 
         ws_thread.join(timeout=2.0)
 
@@ -188,7 +192,10 @@ def get_transcript():
         print(f"An unexpected error occurred: {e}")
         stop_event.set()
         if ws_app:
-            ws_app.close()
+            try:
+                ws_app.close()
+            except:
+                pass
         ws_thread.join(timeout=2.0)
 
     finally:
