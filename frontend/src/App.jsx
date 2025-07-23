@@ -18,8 +18,9 @@ function App() {
         Hey {User}
       </h2>
       <div>
+        {/* TODO :: change image to micoff onclick */}
         <img
-          className="rounded-full w-[100px] bg-sky-800/70 hover:bg-sky-700/60 border-2 border-blue-500 hover:border-blue-400 p-2 mt-10 mb-8 transition"
+          className="rounded-full w-[100px] bg-sky-800/70 hover:bg-sky-600/65 border-2 border-blue-500 hover:border-blue-400 p-2 mt-10 mb-8 transition"
           src="/assets/icons/mic_on.svg"
           alt="mic icon"
         />
