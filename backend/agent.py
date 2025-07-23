@@ -1,4 +1,4 @@
-from assembly import get_transcript
+from assemblyAI import get_transcript
 from murfAI import play_transcript
 
 try:
