@@ -11,7 +11,6 @@ from dotenv import load_dotenv
 
 
 env_path = Path(__file__).parents[1] / ".env.local"
-print(env_path)
 load_dotenv(env_path)
 
 
@@ -137,7 +136,7 @@ def get_transcript():
             rate=SAMPLE_RATE,
             input=True,
             frames_per_buffer=FRAMES_PER_BUFFER,
-            input_device_index=6
+            input_device_index=int(os.environ.get("PYAUDIO_INPUT_DEVICE"))
         )
         print("Microphone stream opened successfully.")
         print("Speak into your microphone. Press Ctrl+C to stop.")
