@@ -7,46 +7,47 @@ import "/assets/fonts/Space_Mono/SpaceMono-Regular.ttf";
 function App() {
   // Take from user
   const User = "Vivian";
-  const [isOn, setIsOn] = useState(false)
+  const [isOn, setIsOn] = useState(false);
 
   async function micOn() {
-    console.log("-- Turning Microphone On --")
-    const res = await fetch('http://localhost:5000/agentcall', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify( { input: "MIC_ON" } ),
+    console.log("-- Turning Microphone On --");
+    const res = await fetch("http://localhost:5000/agentcall", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ input: "MIC_ON" }),
     });
 
     const data = await res.json();
-    console.log(data)
+    console.log(data);
   }
 
   async function micOff() {
-    console.log("-- Turning Microphone Off --")
-    const res = await fetch('http://localhost:5000/stoprecording', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify( { input: "MIC_OFF" } ),
+    console.log("-- Turning Microphone Off --");
+    const res = await fetch("http://localhost:5000/stoprecording", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ input: "MIC_OFF" }),
     });
 
     const data = await res.json();
-    console.log(data)
+    console.log(data);
   }
 
   const toggleMic = async () => {
     if (isOn) {
-      await micOff()
-      setIsOn(false)
+      await micOff();
+      setIsOn(false);
+    } else {
+      await micOn();
+      setIsOn(true);
     }
-
-    else {
-      await micOn()
-      setIsOn(true)
-    }
-  }
+  };
 
   return (
-    <div className="flex flex-col justify-around items-center h-screen w-full bg-gradient-to-b from-[#031825] via-[#001e33] to-[#001320] shadow-2xl ring-1 ring-white/5 shadow-black/40">
+    <div
+      className="flex flex-col justify-around items-center h-screen w-full bg-gradient-to-b from-[#031825] via-[#001e33] to-[#001320] shadow-2xl ring-1 ring-white/5 shadow-black/40"
+      style={{ fontFamily: "SpaceMono" }}
+    >
       <NavBar />
       <AgentProfile />
       <h2
