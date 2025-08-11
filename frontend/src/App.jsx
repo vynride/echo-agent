@@ -45,7 +45,7 @@ function App() {
 
   return (
     <div
-      className="flex flex-col justify-around items-center h-screen w-full bg-gradient-to-b from-[#031825] via-[#001e33] to-[#001320] shadow-2xl ring-1 ring-white/5 shadow-black/40"
+      className="flex flex-col justify-around items-center h-screen w-screen bg-gradient-to-b from-[#031825] via-[#001e33] to-[#001320] shadow-2xl ring-1 ring-white/5 shadow-black/40"
       style={{ fontFamily: "SpaceMono" }}
     >
       <NavBar />
